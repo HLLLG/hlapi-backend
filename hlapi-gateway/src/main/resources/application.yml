@@ -1,0 +1,41 @@
+server:
+  port: 8090
+spring:
+  cloud:
+    gateway:
+      default-filters:
+        - AddResponseHeader=source, hlllg
+      routes:
+        - id: api_route
+          uri: http://localhost:8123
+          predicates:
+            - Path=/api/**
+#          filters:
+#            - AddRequestHeader=hlllg, swag
+#            - AddRequestParameter=name, blue
+#            - name: CircuitBreaker
+#              args:
+#                name: fetchIngredients
+#                fallbackUri: forward:/fallback
+#        - id: ingredients-fallback
+#          uri: http://user.hlllg.cn
+#          predicates:
+#            - Path=/fallback
+
+
+logging:
+  level:
+    org:
+      springframework:
+        cloud:
+          gateway: trace
+
+dubbo:
+  application:
+    name: dubbo-springboot-demo-provider
+  protocol:
+    name: dubbo
+    port: -1
+  registry:
+    id: nacos-registry
+    address: nacos://localhost:8848
